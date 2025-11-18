@@ -1,0 +1,44 @@
+name: Auto Delete Branch
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  delete-branch:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check conditions
+        id: check
+        run: |
+          # Не удаляем ветки из форков
+          if [ "${{ github.event.pull_request.head.repo.fork }}" == "true" ]; then
+            echo "skip_reason=fork" >> $GITHUB_OUTPUT
+            echo "::warning::Skipping fork branch"
+            exit 0
+          fi
+
+          # Не удаляем защищенные ветки
+          PROTECTED_BRANCHES="main master develop production"
+          CURRENT_BRANCH="${{ github.event.pull_request.head.ref }}"
+
+          if [[ " $PROTECTED_BRANCHES " == *" $CURRENT_BRANCH "* ]]; then
+            echo "skip_reason=protected" >> $GITHUB_OUTPUT
+            echo "::warning::Skipping protected branch: $CURRENT_BRANCH"
+            exit 0
+          fi
+
+          echo "skip_reason=none" >> $GITHUB_OUTPUT
+
+      - name: Delete branch
+        if: steps.check.outputs.skip_reason == 'none'
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          echo "Deleting branch: $BRANCH_NAME"
+          git push origin --delete "$BRANCH_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
