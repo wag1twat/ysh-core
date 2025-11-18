@@ -1,19 +1,36 @@
 {
     "compilerOptions": {
-        "target": "ES2020",
-        "module": "CommonJS",
         "declaration": true,
-        "outDir": "./dist",
+        "declarationMap": true,
+        "sourceMap": true,
+        "outDir": "./dist/types",
         "rootDir": "./src",
-        "strict": true,
+        "noEmit": false,
+        "baseUrl": "./src",
+        "paths": {
+            "@/*": ["./*"]
+        },
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
         "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "target": "ES2022",
+        "lib": ["ES2022", "DOM"],
+        "types": ["jest", "node", "reflect-metadata"],
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "useDefineForClassFields": false,
+        "strict": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "paths": {
-            "@/*": ["./src/*"]
-        },
-        "types": ["jest", "node"]
+        "allowJs": true,
+        "downlevelIteration": true,
+        "jsx": "react-jsx",
+        "incremental": true,
+        "tsBuildInfoFile": null
     },
-    "include": ["src/**/*", "src/**/*.test.ts", "src/**/*.spec.ts"],
-    "exclude": ["node_modules", "dist", "**/*.test.ts"]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts", "**/__tests__/**"]
 }
