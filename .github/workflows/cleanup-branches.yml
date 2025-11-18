@@ -1,52 +1,52 @@
 name: Safe Branch Cleanup
 
 on:
-  pull_request:
-    types: [closed]
+    pull_request:
+        types: [closed]
 
 jobs:
-  delete-branch:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    delete-branch:
+        if: github.event.pull_request.merged == true
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
 
-    steps:
-      - name: Check conditions
-        id: conditions
-        run: |
-          # Проверяем что ветка из этого же репозитория (не форк)
-          if [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
-            echo "can_delete=false" >> $GITHUB_OUTPUT
-            echo "reason=fork" >> $GITHUB_OUTPUT
-            exit 0
-          fi
+        steps:
+            - name: Check conditions
+              id: conditions
+              run: |
+                  # Проверяем что ветка из этого же репозитория (не форк)
+                  if [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
+                    echo "can_delete=false" >> $GITHUB_OUTPUT
+                    echo "reason=fork" >> $GITHUB_OUTPUT
+                    exit 0
+                  fi
 
-          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+                  BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
 
-          # Список защищенных веток
-          PROTECTED_BRANCHES="main master develop production staging"
-          if [[ " $PROTECTED_BRANCHES " == *" $BRANCH_NAME "* ]]; then
-            echo "can_delete=false" >> $GITHUB_OUTPUT
-            echo "reason=protected" >> $GITHUB_OUTPUT
-            exit 0
-          fi
+                  # Список защищенных веток
+                  PROTECTED_BRANCHES="main master develop production staging"
+                  if [[ " $PROTECTED_BRANCHES " == *" $BRANCH_NAME "* ]]; then
+                    echo "can_delete=false" >> $GITHUB_OUTPUT
+                    echo "reason=protected" >> $GITHUB_OUTPUT
+                    exit 0
+                  fi
 
-          echo "can_delete=true" >> $GITHUB_OUTPUT
-          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+                  echo "can_delete=true" >> $GITHUB_OUTPUT
+                  echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
-      - name: Delete branch
-        if: steps.conditions.outputs.can_delete == 'true'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            try {
-              await github.rest.git.deleteRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: `heads/${{ steps.conditions.outputs.branch_name }}`
-              });
-              console.log(`✅ Branch ${{ steps.conditions.outputs.branch_name }} deleted successfully`);
-            } catch (error) {
-              console.log(`⚠️ Could not delete branch: ${error.message}`);
-            }
+            - name: Delete branch
+              if: steps.conditions.outputs.can_delete == 'true'
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      try {
+                        await github.rest.git.deleteRef({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          ref: `heads/${{ steps.conditions.outputs.branch_name }}`
+                        });
+                        console.log(`✅ Branch ${{ steps.conditions.outputs.branch_name }} deleted successfully`);
+                      } catch (error) {
+                        console.log(`⚠️ Could not delete branch: ${error.message}`);
+                      }
