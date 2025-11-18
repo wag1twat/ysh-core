@@ -48,4 +48,9 @@ export default {
     testPathIgnorePatterns: ['/node_modules/', '/dist/'],
     verbose: true,
     testTimeout: 10000,
+    collectCoverageFrom: [
+        'src/**/*.{js,jsx,ts,tsx}',
+        '!src/**/*.d.ts',
+    ],
+    coverageReporters: ['lcov', 'text', 'html']
 };
