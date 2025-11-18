@@ -35,6 +35,9 @@
     "*.ts": [
       "eslint --fix",
       "jest --bail --findRelatedTests"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
     ]
   },
   "files": [
