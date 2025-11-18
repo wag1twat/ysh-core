@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.16.0](https://github.com/wag1twat/ysh-core/compare/v1.15.1...v1.16.0) (2025-11-18)
+
+
+### Features
+
+* build ([9247f2b](https://github.com/wag1twat/ysh-core/commit/9247f2b53978f91e15926ad8f2de41fc84987d0a))
+
 ### [1.15.1](https://github.com/wag1twat/ysh-core/compare/v1.15.0...v1.15.1) (2025-11-18)
 
 ## [1.15.0](https://github.com/wag1twat/ysh-core/compare/v1.14.1...v1.15.0) (2025-11-18)
