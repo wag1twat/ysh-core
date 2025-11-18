@@ -1,0 +1,92 @@
+name: Main CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.21.0'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: '10.22.0'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run linting
+        run: pnpm run lint
+
+      - name: Run tests
+        run: pnpm run test
+
+      - name: Run tests with coverage
+        run: pnpm run test:coverage
+
+      - name: Build
+        run: pnpm run build
+
+  release:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: quality
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.21.0'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: '10.22.0'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Get version
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'package.json'
+          prop_path: 'version'
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.version.outputs.prop }}
+          name: Release v${{ steps.version.outputs.prop }}
+          body: |
+            Automated release from GitHub Actions
+            - Version: ${{ steps.version.outputs.prop }}
+            - Commit: ${{ github.sha }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
