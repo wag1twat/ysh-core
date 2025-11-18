@@ -1,4 +1,4 @@
-import { container } from '@/container';
+import { container } from '@/client/container';
 
 import { EventEmitterService } from './service';
 

@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 
-import { AbstractEventEmitter } from '@/abstracts';
+import { AbstractEventEmitter } from '@/client/abstracts';
 
 @injectable()
 class EventEmitterService implements AbstractEventEmitter {

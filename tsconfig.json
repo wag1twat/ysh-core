@@ -8,7 +8,9 @@
         "noEmit": false,
         "baseUrl": "./src",
         "paths": {
-            "@/*": ["./*"]
+            "@/*": ["./*"],
+            "@client/*": ["./client/*"],
+            "@server/*": ["./server/*"]
         },
         "module": "ESNext",
         "moduleResolution": "Bundler",
