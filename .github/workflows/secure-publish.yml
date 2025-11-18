@@ -1,48 +1,44 @@
-name: Secure Publish
+name: Conditional Publish
 
 on:
-  push:
-    branches: [main]
-    tags: ['v*']
-
-jobs:
-  publish:
-    if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js with OIDC
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          registry-url: 'https://registry.npmjs.org/'
-          cache: 'pnpm'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Run tests
-        run: pnpm run test
-
-      - name: Build
-        run: pnpm run build
-
-      - name: Verify package
-        run: |
-          echo "Package name: $(node -p "require('./package.json').name")"
-          echo "Version: $(node -p "require('./package.json').version")"
-          echo "Files: $(node -p "require('./package.json').files || '[]')"
-
-      - name: Publish to npm using OIDC
-        run: pnpm publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN || env.NODE_AUTH_TOKEN }}
+    push:
+      tags: ['v*']
+  
+  jobs:
+    publish:
+      runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        id-token: write  # Критически важно для OIDC
+  
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+  
+        - name: Setup Node.js with OIDC
+          uses: actions/setup-node@v4
+          with:
+            node-version: "18"
+            registry-url: 'https://registry.npmjs.org/'
+            cache: 'pnpm'
+  
+        - name: Install pnpm
+          run: npm install -g pnpm
+  
+        - name: Install dependencies
+          run: pnpm install
+  
+        - name: Run tests
+          run: pnpm run test
+  
+        - name: Build
+          run: pnpm run build
+  
+        - name: Verify package content
+          run: |
+            echo "Package structure:"
+            find dist -type f || echo "No dist folder"
+            [ -f "package.json" ] && echo "package.json exists" || exit 1
+  
+        - name: Publish using OIDC
+          run: pnpm publish --access public --no-git-checks
