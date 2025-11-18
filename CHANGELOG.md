@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.18.5](https://github.com/wag1twat/ysh-core/compare/v1.18.4...v1.18.5) (2025-11-18)
+
+
+### Code Refactoring
+
+* jest config ([761f1e5](https://github.com/wag1twat/ysh-core/commit/761f1e5de9958daa5bb4f0f64b67d1c7cf1d77ba))
+
 ### [1.18.4](https://github.com/wag1twat/ysh-core/compare/v1.18.3...v1.18.4) (2025-11-18)
 
 
