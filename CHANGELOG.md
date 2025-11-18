@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.14.0](https://github.com/wag1twat/ysh-core/compare/v1.13.0...v1.14.0) (2025-11-18)
+
+
+### Features
+
+* custom event emitter service for client ([8e03efd](https://github.com/wag1twat/ysh-core/commit/8e03efdbd3dfc4bbb8bc84dadf827d87ed089d94))
+
 ## [1.13.0](https://github.com/wag1twat/ysh-core/compare/v1.12.0...v1.13.0) (2025-11-18)
 
 
