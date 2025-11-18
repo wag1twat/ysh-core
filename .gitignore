@@ -5,3 +5,4 @@ dist
 coverage
 .husky/_/*
 !.husky/_/.gitignore
+CHANGELOG.md
