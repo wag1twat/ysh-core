@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.18.7](https://github.com/wag1twat/ysh-core/compare/v1.18.6...v1.18.7) (2025-11-18)
+
+
+### Tests
+
+* test event emmiter hook ([8e5396f](https://github.com/wag1twat/ysh-core/commit/8e5396f6fdb114aa8aca2d82bce5021dbca9743b))
+
 ### [1.18.6](https://github.com/wag1twat/ysh-core/compare/v1.18.5...v1.18.6) (2025-11-18)
 
 ### [1.18.5](https://github.com/wag1twat/ysh-core/compare/v1.18.4...v1.18.5) (2025-11-18)
