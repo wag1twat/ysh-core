@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/wag1twat/ysh-core/compare/v1.0.2...v1.2.0) (2025-11-18)
+
+
+### Features
+
+* workflow ([5877c35](https://github.com/wag1twat/ysh-core/commit/5877c352059f715e21d4e9946da3dc4396af23d3))
+* workflow ([600f218](https://github.com/wag1twat/ysh-core/commit/600f2181543f59c3555e0d4fb8c32a9bb963e6c7))
+
+
+### Chores
+
+* **release:** 1.1.0 ([f31537f](https://github.com/wag1twat/ysh-core/commit/f31537fe01a64f65943c59c6d278939473be4c3e))
+
 ## [1.1.0](https://github.com/wag1twat/ysh-core/compare/v1.0.2...v1.1.0) (2025-11-18)
 
 
