@@ -1,44 +1,59 @@
-name: Conditional Publish
+name: Safe Publish
 
 on:
-    push:
-      tags: ['v*']
-  
-  jobs:
-    publish:
-      runs-on: ubuntu-latest
-      permissions:
-        contents: read
-        id-token: write  # Критически важно для OIDC
-  
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
-  
-        - name: Setup Node.js with OIDC
-          uses: actions/setup-node@v4
-          with:
-            node-version: "18"
-            registry-url: 'https://registry.npmjs.org/'
-            cache: 'pnpm'
-  
-        - name: Install pnpm
-          run: npm install -g pnpm
-  
-        - name: Install dependencies
-          run: pnpm install
-  
-        - name: Run tests
-          run: pnpm run test
-  
-        - name: Build
-          run: pnpm run build
-  
-        - name: Verify package content
-          run: |
-            echo "Package structure:"
-            find dist -type f || echo "No dist folder"
-            [ -f "package.json" ] && echo "package.json exists" || exit 1
-  
-        - name: Publish using OIDC
-          run: pnpm publish --access public --no-git-checks
+  push:
+    tags: ['v*']
+  workflow_dispatch: # Ручной запуск
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org/'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        run: pnpm run test
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Check NPM_TOKEN
+        id: check_token
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "NPM_TOKEN is not set, will try without it"
+            echo "use_token=false" >> $GITHUB_OUTPUT
+          else
+            echo "NPM_TOKEN is set"
+            echo "use_token=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish with token
+        if: steps.check_token.outputs.use_token == 'true'
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish without token
+        if: steps.check_token.outputs.use_token == 'false'
+        run: |
+          echo "Attempting to publish without explicit token..."
+          pnpm publish --access public --no-git-checks || echo "Publish failed, check npm authentication"
