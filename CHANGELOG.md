@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.18.0](https://github.com/wag1twat/ysh-core/compare/v1.17.4...v1.18.0) (2025-11-18)
+
+
+### Features
+
+* coveralls ([8045b44](https://github.com/wag1twat/ysh-core/commit/8045b44b6d8844e82047701f9c844487a6fc0ef0))
+
 ### [1.17.4](https://github.com/wag1twat/ysh-core/compare/v1.17.3...v1.17.4) (2025-11-18)
 
 ### [1.17.3](https://github.com/wag1twat/ysh-core/compare/v1.17.2...v1.17.3) (2025-11-18)
