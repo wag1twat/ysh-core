@@ -1,11 +1,37 @@
 /** @type {import('jest').Config} */
 export default {
-    preset: 'ts-jest/presets/default-esm',
-    testEnvironment: 'jsdom',
-    extensionsToTreatAsEsm: ['.ts'],
-    moduleNameMapper: {
-        '^@/(.*)$': '<rootDir>/src/$1',
-    },
+    projects: [
+        {
+            preset: 'ts-jest/presets/default-esm',
+            testEnvironment: 'jsdom',
+            extensionsToTreatAsEsm: ['.ts'],
+            moduleNameMapper: {
+                '^@/(.*)$': '<rootDir>/src/$1',
+            },
+            displayName: 'client',
+            testMatch: ['<rootDir>/src/client/**/*.test.ts', '<rootDir>/src/client/**/*.spec.ts'],
+        },
+        {
+            preset: 'ts-jest',
+            testEnvironment: 'node',
+            extensionsToTreatAsEsm: ['.ts'],
+            moduleNameMapper: {
+                '^@/(.*)$': '<rootDir>/src/$1',
+            },
+            displayName: 'server',
+            testMatch: ['<rootDir>/src/server/**/*.test.ts', '<rootDir>/src/server/**/*.spec.ts'],
+        },
+        {
+            preset: 'ts-jest/presets/default-esm',
+            testEnvironment: 'node',
+            extensionsToTreatAsEsm: ['.ts'],
+            moduleNameMapper: {
+                '^@/(.*)$': '<rootDir>/src/$1',
+            },
+            displayName: 'common',
+            testMatch: ['<rootDir>/src/common/**/*.test.ts', '<rootDir>/src/common/**/*.spec.ts'],
+        },
+    ],
     transform: {
         '^.+\\.ts$': [
             'ts-jest',
@@ -19,7 +45,6 @@ export default {
         ],
     },
     moduleDirectories: ['node_modules', 'src'],
-    testMatch: ['**/__tests__/**/*.ts', '**/*.test.ts', '**/*.spec.ts'],
     testPathIgnorePatterns: ['/node_modules/', '/dist/'],
     verbose: true,
     testTimeout: 10000,
