@@ -10,7 +10,8 @@
         "paths": {
             "@/*": ["./*"],
             "@client/*": ["./client/*"],
-            "@server/*": ["./server/*"]
+            "@server/*": ["./server/*"],
+            "@common/*": ["./common/*"]
         },
         "module": "ESNext",
         "moduleResolution": "Bundler",

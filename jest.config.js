@@ -13,8 +13,9 @@ export default {
             collectCoverageFrom: [
                 '<rootDir>/src/client/**/*.{ts,tsx}',
                 '!<rootDir>/src/client/**/*.d.ts',
-                '!<rootDir>/src/client/abstracts/**'
+                '!<rootDir>/src/client/abstracts/**',
             ],
+            setupFiles: ['reflect-metadata'],
         },
         {
             preset: 'ts-jest',
@@ -28,7 +29,7 @@ export default {
             collectCoverageFrom: [
                 '<rootDir>/src/server/**/*.{ts,tsx}',
                 '!<rootDir>/src/server/**/*.d.ts',
-                '!<rootDir>/src/server/abstracts/**'
+                '!<rootDir>/src/server/abstracts/**',
             ],
         },
         {
@@ -43,7 +44,7 @@ export default {
             collectCoverageFrom: [
                 '<rootDir>/src/common/**/*.{ts,tsx}',
                 '!<rootDir>/src/common/**/*.d.ts',
-                '!<rootDir>/src/common/abstracts/**'
+                '!<rootDir>/src/common/abstracts/**',
             ],
         },
     ],
@@ -61,7 +62,7 @@ export default {
     },
     moduleDirectories: ['node_modules', 'src'],
     verbose: true,
-    testTimeout: 10000, 
+    testTimeout: 10000,
     testPathIgnorePatterns: [
         '/node_modules/',
         '/dist/',
@@ -70,8 +71,8 @@ export default {
         '/.github/',
         '/docs/',
         '/src/client/abstracts/',
-        '/src/server/abstracts/', 
-        '/src/common/abstracts/'
+        '/src/server/abstracts/',
+        '/src/common/abstracts/',
     ],
     coveragePathIgnorePatterns: [
         '/node_modules/',
@@ -81,8 +82,8 @@ export default {
         '/.github/',
         '/src/client/abstracts/',
         '/src/server/abstracts/',
-        '/src/common/abstracts/'
+        '/src/common/abstracts/',
     ],
     coverageReporters: ['lcov', 'text', 'html'],
-    passWithNoTests: true
+    passWithNoTests: true,
 };

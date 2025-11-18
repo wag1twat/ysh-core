@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 
-import { EventEmitterService } from './services';
+import { EventEmitterService } from './services/event-emmiter/service';
 
 const container = new Container();
 
