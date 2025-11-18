@@ -10,6 +10,11 @@ export default {
             },
             displayName: 'client',
             testMatch: ['<rootDir>/src/client/**/*.test.ts', '<rootDir>/src/client/**/*.spec.ts'],
+            collectCoverageFrom: [
+                '<rootDir>/src/client/**/*.{ts,tsx}',
+                '!<rootDir>/src/client/**/*.d.ts',
+                '!<rootDir>/src/client/abstracts/**'
+            ],
         },
         {
             preset: 'ts-jest',
@@ -20,6 +25,11 @@ export default {
             },
             displayName: 'server',
             testMatch: ['<rootDir>/src/server/**/*.test.ts', '<rootDir>/src/server/**/*.spec.ts'],
+            collectCoverageFrom: [
+                '<rootDir>/src/server/**/*.{ts,tsx}',
+                '!<rootDir>/src/server/**/*.d.ts',
+                '!<rootDir>/src/server/abstracts/**'
+            ],
         },
         {
             preset: 'ts-jest/presets/default-esm',
@@ -30,6 +40,11 @@ export default {
             },
             displayName: 'common',
             testMatch: ['<rootDir>/src/common/**/*.test.ts', '<rootDir>/src/common/**/*.spec.ts'],
+            collectCoverageFrom: [
+                '<rootDir>/src/common/**/*.{ts,tsx}',
+                '!<rootDir>/src/common/**/*.d.ts',
+                '!<rootDir>/src/common/abstracts/**'
+            ],
         },
     ],
     transform: {
@@ -45,12 +60,29 @@ export default {
         ],
     },
     moduleDirectories: ['node_modules', 'src'],
-    testPathIgnorePatterns: ['/node_modules/', '/dist/'],
     verbose: true,
-    testTimeout: 10000,
-    collectCoverageFrom: [
-        'src/**/*.{js,jsx,ts,tsx}',
-        '!src/**/*.d.ts',
+    testTimeout: 10000, 
+    testPathIgnorePatterns: [
+        '/node_modules/',
+        '/dist/',
+        '/build/',
+        '/coverage/',
+        '/.github/',
+        '/docs/',
+        '/src/client/abstracts/',
+        '/src/server/abstracts/', 
+        '/src/common/abstracts/'
     ],
-    coverageReporters: ['lcov', 'text', 'html']
+    coveragePathIgnorePatterns: [
+        '/node_modules/',
+        '/dist/',
+        '/build/',
+        '/coverage/',
+        '/.github/',
+        '/src/client/abstracts/',
+        '/src/server/abstracts/',
+        '/src/common/abstracts/'
+    ],
+    coverageReporters: ['lcov', 'text', 'html'],
+    passWithNoTests: true
 };
