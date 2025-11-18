@@ -1,76 +1,114 @@
 {
-  "version": "1.15.1",
-  "name": "ysh-core",
-  "description": "Ядро для приложений на React",
-  "author": "Yury Shulga",
-  "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "keywords": [
-    "core",
-    "next",
-    "react"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "prepublishOnly": "pnpm run build",
-    "commit": "cz",
-    "prepare": "husky install",
-    "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix",
-    "release": "standard-version",
-    "release:minor": "standard-version --release-as minor",
-    "release:major": "standard-version --release-as major",
-    "release:dry-run": "standard-version --dry-run",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --fix",
-      "jest --bail --findRelatedTests"
+    "version": "1.15.1",
+    "name": "ysh-core",
+    "description": "Ядро для приложений на React",
+    "author": "Yury Shulga",
+    "license": "MIT",
+    "keywords": [
+        "typescript",
+        "nodejs",
+        "esm",
+        "node22",
+        "modern"
     ],
-    "*.{json,md}": [
-      "prettier --write"
-    ]
-  },
-  "files": [
-    "dist"
-  ],
-  "packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c",
-  "devDependencies": {
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0",
-    "@eslint/compat": "^2.0.0",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.10.1",
-    "@typescript-eslint/eslint-plugin": "^8.47.0",
-    "@typescript-eslint/parser": "^8.47.0",
-    "commitizen": "^4.3.1",
-    "conventional-changelog-cli": "^5.0.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^9.39.1",
-    "eslint-plugin-import-x": "^4.16.1",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "husky": "^9.1.7",
-    "jest": "^30.2.0",
-    "jest-environment-jsdom": "^30.2.0",
-    "lint-staged": "^16.2.6",
-    "prettier": "^3.6.2",
-    "standard-version": "^9.5.0",
-    "ts-jest": "^29.4.5",
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "inversify": "^7.10.4",
-    "reflect-metadata": "^0.2.2"
-  }
+    "engines": {
+        "node": ">=22.21.0"
+    },
+    "type": "module",
+    "sideEffects": false,
+    "main": "./dist/cjs/index.cjs",
+    "module": "./dist/esm/index.mjs",
+    "types": "./dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/esm/index.mjs",
+            "require": "./dist/cjs/index.cjs",
+            "default": "./dist/esm/index.mjs"
+        }
+    },
+    "scripts": {
+        "build": "pnpm run build:types && webpack --mode=production",
+        "build:dev": "pnpm run build:types && webpack --mode=development",
+        "build:watch": "pnpm run build:types && webpack --mode=development --watch",
+        "build:types": "tsc --emitDeclarationOnly --outDir dist/types",
+        "dev": "pnpm run build:watch",
+        "type-check": "tsc --noEmit",
+        "clean": "rm -rf dist",
+        "prepublishOnly": "pnpm run build && pnpm run type-check",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage",
+        "commit": "cz",
+        "prepare": "husky install",
+        "lint": "eslint src --ext .ts",
+        "lint:fix": "eslint src --ext .ts --fix",
+        "release": "standard-version",
+        "release:minor": "standard-version --release-as minor",
+        "release:major": "standard-version --release-as major",
+        "release:dry-run": "standard-version --dry-run",
+        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    },
+    "lint-staged": {
+        "*.ts": [
+            "eslint --fix",
+            "jest --bail --findRelatedTests"
+        ],
+        "*.{json,md}": [
+            "prettier --write"
+        ]
+    },
+    "files": [
+        "dist"
+    ],
+    "packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c",
+    "devDependencies": {
+        "@commitlint/cli": "^20.1.0",
+        "@commitlint/config-conventional": "^20.0.0",
+        "@eslint/compat": "^2.0.0",
+        "@types/jest": "^30.0.0",
+        "@types/node": "^24.10.1",
+        "@types/react": "19.2.3",
+        "@types/react-dom": "19.2.3",
+        "@typescript-eslint/eslint-plugin": "^8.47.0",
+        "@typescript-eslint/parser": "^8.47.0",
+        "commitizen": "^4.3.1",
+        "conventional-changelog-cli": "^5.0.0",
+        "cz-conventional-changelog": "^3.3.0",
+        "eslint": "^9.39.1",
+        "eslint-plugin-import-x": "^4.16.1",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-simple-import-sort": "^12.1.1",
+        "husky": "^9.1.7",
+        "jest": "^30.2.0",
+        "jest-environment-jsdom": "^30.2.0",
+        "lint-staged": "^16.2.6",
+        "prettier": "^3.6.2",
+        "standard-version": "^9.5.0",
+        "ts-jest": "^29.4.5",
+        "ts-loader": "^9.5.4",
+        "tsconfig-paths-webpack-plugin": "^4.2.0",
+        "typescript": "^5.9.3",
+        "webpack": "^5.103.0",
+        "webpack-cli": "^6.0.1",
+        "webpack-node-externals": "^3.0.0"
+    },
+    "dependencies": {
+        "inversify": "^7.10.4",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
+        "reflect-metadata": "^0.2.2"
+    },
+    "pnpm": {
+        "overrides": {
+            "@types/react": "19.2.3",
+            "@types/react-dom": "19.2.3"
+        }
+    }
 }
