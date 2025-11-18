@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.17.0](https://github.com/wag1twat/ysh-core/compare/v1.16.0...v1.17.0) (2025-11-18)
+
+
+### Features
+
+* export ([fa9664e](https://github.com/wag1twat/ysh-core/commit/fa9664efe99324b0b304bc93f3f40d72df0c05ff))
+
 ## [1.16.0](https://github.com/wag1twat/ysh-core/compare/v1.15.1...v1.16.0) (2025-11-18)
 
 
