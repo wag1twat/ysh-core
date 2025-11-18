@@ -3,8 +3,6 @@ name: Main CI/CD
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
   quality:
@@ -23,7 +21,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: '10.22.0'
+          version: 8
 
       - name: Install dependencies
         run: pnpm install
@@ -65,7 +63,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: '10.22.0'
+          version: 0
 
       - name: Install dependencies
         run: pnpm install
