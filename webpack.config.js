@@ -8,9 +8,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default (env, argv) => {
     const isProduction = argv.mode === 'production';
 
+    const entry = {
+        // Используем вложенные пути для output
+        index: './src/common/index.ts',
+        'client/index': './src/client/index.ts',
+        'server/index': './src/server/index.ts',
+    };
+
     const baseConfig = {
         target: 'node22',
-        entry: './src/index.ts',
+        entry,
         resolve: {
             extensions: ['.ts', '.js'],
             plugins: [
@@ -49,7 +56,7 @@ export default (env, argv) => {
             mangleExports: isProduction ? 'size' : false,
             innerGraph: true,
             providedExports: true,
-            splitChunks: false,
+            splitChunks: false, // Важно: отключаем для библиотек
             removeAvailableModules: isProduction,
             removeEmptyChunks: isProduction,
         },
@@ -64,7 +71,8 @@ export default (env, argv) => {
             name: 'esm',
             output: {
                 path: join(__dirname, 'dist/esm'),
-                filename: 'index.mjs',
+                // Используем [name] для разных entry points
+                filename: '[name].mjs',
                 library: {
                     type: 'module',
                 },
@@ -88,7 +96,8 @@ export default (env, argv) => {
             name: 'cjs',
             output: {
                 path: join(__dirname, 'dist/cjs'),
-                filename: 'index.cjs',
+                // Используем [name] для разных entry points
+                filename: '[name].cjs',
                 library: {
                     type: 'commonjs2',
                 },

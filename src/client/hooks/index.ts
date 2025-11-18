@@ -1,0 +1,1 @@
+export { useEventEmmiterService } from './useEventEmmiterService';
