@@ -24,7 +24,9 @@
     "lint:fix": "eslint src --ext .ts --fix",
     "release": "standard-version",
     "release:minor": "standard-version --release-as minor",
-    "release:major": "standard-version --release-as major"
+    "release:major": "standard-version --release-as major",
+    "release:dry-run": "standard-version --dry-run",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
   "config": {
     "commitizen": {
@@ -60,6 +62,7 @@
     "prettier": "^3.6.2",
     "standard-version": "^9.5.0",
     "ts-jest": "^29.4.5",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "conventional-changelog-cli": "^5.0.0"
   }
 }
