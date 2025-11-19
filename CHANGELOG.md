@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.19.1](https://github.com/wag1twat/ysh-core/compare/v1.19.0...v1.19.1) (2025-11-19)
+
+
+### Tests
+
+* http client ([463d4fb](https://github.com/wag1twat/ysh-core/commit/463d4fb282abf8ba3f91920f0d4b3c698d610881))
+
 ## [1.19.0](https://github.com/wag1twat/ysh-core/compare/v1.18.7...v1.19.0) (2025-11-19)
 
 
