@@ -14,7 +14,6 @@ module.exports = {
         {
             moduleNameMapper: {
                 '^@/(.*)$': '<rootDir>/src/$1',
-                '^query-string$': '<rootDir>/__mocks__/query-string.js',
             },
             preset: undefined,
             roots: ['<rootDir>/src'],
@@ -37,7 +36,6 @@ module.exports = {
         {
             moduleNameMapper: {
                 '^@/(.*)$': '<rootDir>/src/$1',
-                '^query-string$': '<rootDir>/__mocks__/query-string.js',
             },
             preset: undefined,
             roots: ['<rootDir>/src'],
@@ -60,7 +58,6 @@ module.exports = {
         {
             moduleNameMapper: {
                 '^@/(.*)$': '<rootDir>/src/$1',
-                '^query-string$': '<rootDir>/__mocks__/query-string.js',
             },
             preset: undefined,
             roots: ['<rootDir>/src'],

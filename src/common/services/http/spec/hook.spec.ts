@@ -7,7 +7,7 @@ import { getHttpService } from '../hook';
 import { HttpService } from '../service';
 
 describe('HttpService', () => {
-    test('health', () => {
+    test('should correctly handle IoC container', () => {
         const url = 'https://jsonplaceholder.typicode.com';
 
         const container = getContainer();

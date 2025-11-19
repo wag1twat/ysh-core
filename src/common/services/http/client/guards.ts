@@ -1,3 +1,4 @@
+// TODO: рефакторинг и унификация (уход от zod)
 import { get, isObject, set } from 'es-toolkit/compat';
 import { injectable } from 'inversify';
 import querystring from 'query-string';
@@ -118,6 +119,8 @@ export class HttpClientGuardsService {
 
             throw new HttpClientError(404, message);
         }
+
+        return requestConfig;
     }
 
     public handleIsParams<T extends THttpClientRequestConfig>(
@@ -154,6 +157,8 @@ export class HttpClientGuardsService {
 
             throw new HttpClientError(404, message);
         }
+
+        return requestConfig;
     }
 
     public cleanup() {

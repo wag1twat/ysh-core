@@ -13,7 +13,7 @@ describe('HttpClientService', () => {
         httpClientService.cleanup();
     });
 
-    test('request', async () => {
+    test('should request correctly', async () => {
         expect(httpClientService).toBeInstanceOf(HttpClientService);
 
         expect(httpClientService.controllers.size).toBe(0);
@@ -32,7 +32,7 @@ describe('HttpClientService', () => {
         });
     });
 
-    test('addResponseInterceptor', async () => {
+    test(' should addResponseInterceptor correctly', async () => {
         expect(httpClientService).toBeInstanceOf(HttpClientService);
 
         expect(httpClientService.controllers.size).toBe(0);
@@ -60,7 +60,7 @@ describe('HttpClientService', () => {
         });
     });
 
-    test('addRequestInterceptor', async () => {
+    test('should addRequestInterceptor correctly', async () => {
         expect(httpClientService).toBeInstanceOf(HttpClientService);
 
         expect(httpClientService.controllers.size).toBe(0);

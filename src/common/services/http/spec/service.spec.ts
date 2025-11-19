@@ -20,7 +20,7 @@ describe('HttpService', () => {
         httpService.cleanup();
     });
 
-    test('request', async () => {
+    test('should request correctly', async () => {
         expect(httpService).toBeInstanceOf(HttpService);
 
         expect(httpService.baseURL).toBe(url);
@@ -40,7 +40,7 @@ describe('HttpService', () => {
         });
     });
 
-    test('interceptors stack', async () => {
+    test('should interceptors correctly stack size', async () => {
         expect(httpService).toBeInstanceOf(HttpService);
 
         expect(httpService.baseURL).toBe(url);

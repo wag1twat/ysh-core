@@ -14,7 +14,7 @@ describe('EventEmitterService', () => {
         eventEmitterService.unsubscribeAll();
     });
 
-    test('subscribe', () => {
+    test('should subscribe correctly', () => {
         const fn = jest.fn();
 
         const type = 'event-1';
