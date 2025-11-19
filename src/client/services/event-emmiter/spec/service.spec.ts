@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { getEventEmitterService } from '../hook';
 import { EventEmitterService } from '../service';
 

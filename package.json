@@ -51,9 +51,9 @@
         "type-check": "tsc --noEmit",
         "clean": "rm -rf dist",
         "prepublishOnly": "pnpm run build && pnpm run type-check",
-        "test": "jest",
-        "test:watch": "jest --watch",
-        "test:coverage": "jest --coverage",
+        "test": "jest --config jest.config.cjs",
+        "test:watch": "jest --config jest.config.cjs --watch",
+        "test:coverage": "jest --config jest.config.cjs --coverage",
         "commit": "cz",
         "prepare": "husky install",
         "lint": "eslint src --ext .ts",
@@ -83,9 +83,16 @@
     ],
     "packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c",
     "devDependencies": {
+        "@babel/core": "^7.28.5",
+        "@babel/plugin-proposal-class-properties": "^7.18.6",
+        "@babel/plugin-proposal-decorators": "^7.28.0",
+        "@babel/plugin-transform-class-properties": "^7.27.1",
+        "@babel/preset-env": "^7.28.5",
+        "@babel/preset-typescript": "^7.28.5",
         "@commitlint/cli": "^20.1.0",
         "@commitlint/config-conventional": "^20.0.0",
         "@eslint/compat": "^2.0.0",
+        "@jest/globals": "^30.2.0",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.0",
         "@types/jest": "^30.0.0",
@@ -94,6 +101,8 @@
         "@types/react-dom": "19.2.3",
         "@typescript-eslint/eslint-plugin": "^8.47.0",
         "@typescript-eslint/parser": "^8.47.0",
+        "babel-jest": "^30.2.0",
+        "babel-plugin-transform-typescript-metadata": "^0.4.0",
         "commitizen": "^4.3.1",
         "conventional-changelog-cli": "^5.0.0",
         "cz-conventional-changelog": "^3.3.0",
@@ -107,6 +116,7 @@
         "jest-environment-jsdom": "^30.2.0",
         "lint-staged": "^16.2.6",
         "prettier": "^3.6.2",
+        "reflect-metadata": "^0.1.13",
         "standard-version": "^9.5.0",
         "ts-jest": "^29.4.5",
         "ts-loader": "^9.5.4",
@@ -117,10 +127,13 @@
         "webpack-node-externals": "^3.0.0"
     },
     "dependencies": {
+        "es-toolkit": "^1.42.0",
         "inversify": "^7.10.4",
+        "query-string": "^9.3.1",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
-        "reflect-metadata": "^0.2.2"
+        "reflect-metadata": "^0.2.2",
+        "zod": "^4.1.12"
     },
     "pnpm": {
         "overrides": {

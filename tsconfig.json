@@ -1,26 +1,22 @@
 {
     "compilerOptions": {
+        "target": "es2024",
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
         "outDir": "./dist/types",
-        "rootDir": "./src",
         "noEmit": false,
-        "baseUrl": "./src",
+        "baseUrl": "./",
         "paths": {
-            "@/*": ["./*"],
-            "@client/*": ["./client/*"],
-            "@server/*": ["./server/*"],
-            "@common/*": ["./common/*"]
+            "@/*": ["./src/*"]
         },
         "module": "ESNext",
-        "moduleResolution": "Bundler",
+        "moduleResolution": "node",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "target": "ES2022",
-        "lib": ["ES2022", "DOM"],
+        "lib": ["dom", "dom.iterable", "esnext"],
         "types": ["jest", "node", "reflect-metadata"],
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,

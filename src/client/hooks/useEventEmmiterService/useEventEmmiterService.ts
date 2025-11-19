@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { getEventEmitterService } from '@/client/services';
+import { getEventEmitterService } from '@/client/services/event-emmiter/hook';
 
 export function useEventEmmiterService<
     E extends string,

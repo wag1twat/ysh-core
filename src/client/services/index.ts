@@ -1,1 +1,1 @@
-export { EventEmitterService, getEventEmitterService } from './event-emmiter';
+export { EventEmitterService } from './event-emmiter';
