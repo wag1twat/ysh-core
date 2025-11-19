@@ -4,7 +4,7 @@ import { getEventEmitterService } from '../hook';
 import { EventEmitterService } from '../service';
 
 describe('EventEmitterService', () => {
-    test('health', () => {
+    test('should correctly handle IoC container', () => {
         const eventEmitterService = getEventEmitterService();
 
         expect(eventEmitterService).toBeInstanceOf(EventEmitterService);
