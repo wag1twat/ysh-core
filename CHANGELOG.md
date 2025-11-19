@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.19.0](https://github.com/wag1twat/ysh-core/compare/v1.18.7...v1.19.0) (2025-11-19)
+
+
+### Features
+
+* http service ([2336010](https://github.com/wag1twat/ysh-core/commit/233601063a710d61e9d3a4e517b9105ff28bb83e))
+
+
+### Bug Fixes
+
+* build ([ce30cb3](https://github.com/wag1twat/ysh-core/commit/ce30cb3e6aa7a8e65c4967e211fd8883a152c6db))
+
 ### [1.18.7](https://github.com/wag1twat/ysh-core/compare/v1.18.6...v1.18.7) (2025-11-18)
 
 
