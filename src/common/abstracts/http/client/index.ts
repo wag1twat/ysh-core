@@ -9,7 +9,6 @@ export type {
     THttpClientResponseHeaders,
     THttpClientResponseType,
     THttpClientServiceOptions,
-    TInferHttpClientRequestConfig,
     TReqInterceptor,
     TResInterceptor,
 } from './types';
