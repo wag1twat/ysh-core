@@ -3,4 +3,5 @@ export {
     HttpClientGuardsService,
     HttpClientService,
     HttpService,
+    RestService,
 } from './services';

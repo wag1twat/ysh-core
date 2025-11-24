@@ -1,8 +1,5 @@
-// TODO: рефакторинг и унификация (уход от zod)
-import { get, isObject, set } from 'es-toolkit/compat';
 import { injectable } from 'inversify';
 import querystring from 'query-string';
-import { z } from 'zod/v4';
 
 import { THttpClientGuards, THttpClientRequestConfig } from '@/common/abstracts';
 import { isServer } from '@/utils';
@@ -13,7 +10,9 @@ import { HttpClientError } from './error';
 export class HttpClientGuardsService {
     private guards: Map<string, Partial<THttpClientGuards<unknown, unknown, unknown>>> = new Map();
 
-    public requestIdentifier<T extends THttpClientRequestConfig>(config: T) {
+    public requestIdentifier<Result = unknown, Params = unknown, Payload = unknown>(
+        config: THttpClientRequestConfig<Result, Params, Payload>,
+    ) {
         const identifiers: string[] = [
             config.baseURL || '',
             `${config.url}`,
@@ -43,79 +42,34 @@ export class HttpClientGuardsService {
         this.guards.delete(key);
     }
 
-    public handleIsResult<T extends THttpClientRequestConfig>(
-        data: unknown,
-        requestConfig: THttpClientRequestConfig,
-        guards?: T['guards'],
-    ) {
+    public handleIsResult<Result = unknown, Params = unknown, Payload = unknown>(
+        data: Result,
+        requestConfig: THttpClientRequestConfig<Result, Params, Payload>,
+        guards?: THttpClientRequestConfig<Result, Params, Payload>['guards'],
+    ): Result {
         if (!guards?.isResult) return data;
 
         try {
             guards.isResult(data);
-        } catch (error) {
-            const href = `${requestConfig.baseURL || ''}${requestConfig.url}`;
+        } catch {
+            const message = 'Bad Response';
 
-            if (error instanceof z.ZodError) {
-                console.groupCollapsed(`[BAD_RESPONSE]: ${href}`);
-                console.warn(z.prettifyError(error));
-                console.groupEnd();
-
-                if (Array.isArray(data) || isObject(data)) {
-                    error.issues.forEach((issue) => {
-                        issue.path.forEach((_, index, array) => {
-                            const path = array.slice(0, index + 1);
-
-                            const item = get(data, path) as unknown;
-
-                            if (!Array.isArray(item) && isObject(item)) {
-                                set(data, path.concat(['$invalid']), true);
-                            } else {
-                                set(data, '$invalid', true);
-                            }
-                        });
-                    });
-                }
-            } else {
-                console.groupCollapsed(`[BAD_RESPONSE]: ${href}`);
-                console.warn(data);
-                console.groupEnd();
-            }
+            throw new HttpClientError(404, message);
         }
 
         return data;
     }
 
-    public handleIsPayload<T extends THttpClientRequestConfig>(
-        requestConfig: T,
-        guards?: T['guards'],
-    ) {
+    public handleIsPayload<Result = unknown, Params = unknown, Payload = unknown>(
+        requestConfig: THttpClientRequestConfig<Result, Params, Payload>,
+        guards?: THttpClientRequestConfig<Result, Params, Payload>['guards'],
+    ): THttpClientRequestConfig<Result, Params, Payload> {
         if (!guards?.isPayload) return requestConfig;
 
         try {
             guards.isPayload(requestConfig.payload);
-        } catch (data) {
-            let message = 'Bad Payload';
-
-            const href = `${requestConfig.baseURL || ''}${requestConfig.url}`;
-
-            if (data instanceof z.ZodError) {
-                message = JSON.stringify(
-                    {
-                        errors: z.prettifyError(data),
-                        source: requestConfig.payload,
-                    },
-                    null,
-                    2,
-                );
-                console.groupCollapsed(`[BAD_PAYLOAD]: ${href}`);
-                console.warn(data);
-                console.warn(z.prettifyError(data));
-                console.groupEnd();
-            } else {
-                console.groupCollapsed(`[BAD_PAYLOAD]: ${href}`);
-                console.warn(data);
-                console.groupEnd();
-            }
+        } catch {
+            const message = 'Bad Payload';
 
             throw new HttpClientError(404, message);
         }
@@ -123,37 +77,16 @@ export class HttpClientGuardsService {
         return requestConfig;
     }
 
-    public handleIsParams<T extends THttpClientRequestConfig>(
-        requestConfig: T,
-        guards?: T['guards'],
-    ) {
+    public handleIsParams<Result = unknown, Params = unknown, Payload = unknown>(
+        requestConfig: THttpClientRequestConfig<Result, Params, Payload>,
+        guards?: THttpClientRequestConfig<Result, Params, Payload>['guards'],
+    ): THttpClientRequestConfig<Result, Params, Payload> {
         if (!guards?.isParams) return requestConfig;
 
         try {
             guards.isParams(requestConfig.params);
-        } catch (data) {
-            let message = 'Bad Params';
-
-            const href = `${requestConfig.baseURL || ''}${requestConfig.url}`;
-
-            if (data instanceof z.ZodError) {
-                message = JSON.stringify(
-                    {
-                        errors: z.prettifyError(data),
-                        source: requestConfig.params,
-                    },
-                    null,
-                    2,
-                );
-                console.groupCollapsed(`[BAD_PARAMS]: ${href}`);
-                console.warn(data);
-                console.warn(z.prettifyError(data));
-                console.groupEnd();
-            } else {
-                console.groupCollapsed(`[BAD_PARAMS]: ${href}`);
-                console.warn(data);
-                console.groupEnd();
-            }
+        } catch {
+            const message = 'Bad Params';
 
             throw new HttpClientError(404, message);
         }

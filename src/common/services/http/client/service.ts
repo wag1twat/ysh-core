@@ -9,7 +9,6 @@ import {
     THttpClientResponse,
     THttpClientResponseHeaders,
     THttpClientResponseType,
-    TInferHttpClientRequestConfig,
     TReqInterceptor,
     TResInterceptor,
 } from '@/common/abstracts';
@@ -20,12 +19,9 @@ import { HttpClientGuardsService } from './guards';
 
 @injectable()
 export class HttpClientService {
-    public requestInterceptors = new Map<string, TReqInterceptor<THttpClientRequestConfig>>();
-    public responseInterceptors = new Map<
-        string,
-        TResInterceptor<unknown, THttpClientRequestConfig>
-    >();
-    public errorInterceptors = new Map<string, TErrInterceptor<THttpClientRequestConfig>>();
+    public requestInterceptors = new Map<string, TReqInterceptor>();
+    public responseInterceptors = new Map<string, TResInterceptor>();
+    public errorInterceptors = new Map<string, TErrInterceptor>();
     public controllers = new Map<string, AbortController>();
 
     constructor(private readonly guards: HttpClientGuardsService) {
@@ -54,34 +50,36 @@ export class HttpClientService {
         });
     }
 
-    public addRequestInterceptor<T extends THttpClientRequestConfig>(
+    public addRequestInterceptor<Result = unknown, Params = unknown, Payload = unknown>(
         key: string,
-        fn: TReqInterceptor<T>,
+        fn: TReqInterceptor<Result, Params, Payload>,
     ) {
         if (!this.requestInterceptors.has(key)) {
             this.requestInterceptors.set(key, fn as never);
         }
     }
 
-    public addResponseInterceptor<D, T extends THttpClientRequestConfig>(
+    public addResponseInterceptor<Result = unknown, Params = unknown, Payload = unknown>(
         key: string,
-        fn: TResInterceptor<D, T>,
+        fn: TResInterceptor<Result, Params, Payload>,
     ) {
         if (!this.responseInterceptors.has(key)) {
             this.responseInterceptors.set(key, fn as never);
         }
     }
 
-    public addErrorInterceptor<T extends THttpClientRequestConfig>(
+    public addErrorInterceptor<Result = unknown, Params = unknown, Payload = unknown>(
         key: string,
-        fn: TErrInterceptor<T>,
+        fn: TErrInterceptor<Result, Params, Payload>,
     ) {
         if (!this.errorInterceptors.has(key)) {
             this.errorInterceptors.set(key, fn as never);
         }
     }
 
-    public addInterceptors<T extends THttpClientRequestConfig>(config: T) {
+    public addInterceptors<Result = unknown, Params = unknown, Payload = unknown>(
+        config: THttpClientRequestConfig<Result, Params, Payload>,
+    ) {
         config.interceptors?.response?.forEach(([key, interceptor]) => {
             this.addResponseInterceptor(key, interceptor);
         });
@@ -93,30 +91,30 @@ export class HttpClientService {
         });
     }
 
-    public request = <T extends THttpClientRequestConfig>(
-        initial: T,
-    ): TCancelablePromise<THttpClientResponse<TInferHttpClientRequestConfig<T>['result']>> => {
-        this.addInterceptors(initial);
+    public request = <Result = unknown, Params = unknown, Payload = unknown>(
+        initial: THttpClientRequestConfig<Result, Params, Payload>,
+    ): TCancelablePromise<THttpClientResponse<Result>> => {
+        this.addInterceptors<Result, Params, Payload>(initial);
 
         this.guards.addGuards(this.guards.requestIdentifier(initial), initial.guards);
 
         const controller = new AbortController();
 
-        const promise = this.pipeline<T>(initial, controller, 0);
+        const promise = this.pipeline<Result, Params, Payload>(initial, controller, 0);
 
         this.controllers.set(initial.url, controller);
 
-        return new CancelablePromiseImpl<
-            THttpClientResponse<TInferHttpClientRequestConfig<T>['result']>
-        >(promise, () => controller.abort());
+        return new CancelablePromiseImpl<THttpClientResponse<Result>>(promise, () =>
+            controller.abort(),
+        );
     };
 
-    private async pipeline<T extends THttpClientRequestConfig>(
-        initial: T,
+    private async pipeline<Result = unknown, Params = unknown, Payload = unknown>(
+        initial: THttpClientRequestConfig<Result, Params, Payload>,
         controller: AbortController,
         attempt: number,
-    ): Promise<THttpClientResponse<TInferHttpClientRequestConfig<T>['result']>> {
-        let requestConfig: T = {
+    ): Promise<THttpClientResponse<Result>> {
+        let requestConfig: THttpClientRequestConfig<Result, Params, Payload> = {
             ...initial,
             headers: { ...initial.headers },
             signal: controller.signal,
@@ -126,7 +124,9 @@ export class HttpClientService {
         const requestInterceptors = this.requestInterceptors.values();
 
         for (const fn of requestInterceptors) {
-            requestConfig = (await fn(requestConfig)) as T;
+            requestConfig = (await fn(
+                requestConfig as THttpClientRequestConfig,
+            )) as THttpClientRequestConfig<Result, Params, Payload>;
         }
 
         const url = this.buildURL(requestConfig);
@@ -153,7 +153,7 @@ export class HttpClientService {
                     ? requestConfig.retryDelay(attempt)
                     : 2 ** attempt * 200;
                 await new Promise((r) => setTimeout(r, delay));
-                return this.pipeline<T>(initial, controller, attempt + 1);
+                return this.pipeline<Result, Params, Payload>(initial, controller, attempt + 1);
             }
             throw await this.parseError(response);
         }
@@ -172,17 +172,21 @@ export class HttpClientService {
         const responseInterceptors = this.responseInterceptors.values();
 
         for (const fn of responseInterceptors) {
-            final = (await fn(final, requestConfig)) as TInferHttpClientRequestConfig<T>['result'];
+            final = await fn(final, requestConfig as THttpClientRequestConfig);
         }
 
         return {
             response: final,
             headers: this.parseHeaders(response.headers),
             statusText: response.statusText,
-        } as THttpClientResponse<TInferHttpClientRequestConfig<T>['result']>;
+        } as THttpClientResponse<Result>;
     }
 
-    private buildURL({ baseURL = '', url, params }: THttpClientRequestConfig): string {
+    private buildURL<Result = unknown, Params = unknown, Payload = unknown>({
+        baseURL = '',
+        url,
+        params,
+    }: THttpClientRequestConfig<Result, Params, Payload>): string {
         const prefix = [baseURL.replace(/\/+$/, ''), url.replace(/^\/+/, '')]
             .filter(Boolean)
             .join('/');

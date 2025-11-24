@@ -1,0 +1,1 @@
+export { RestService } from './service';
