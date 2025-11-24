@@ -14,11 +14,13 @@ class HttpService implements AbstractHttpService {
         this.request = this.request.bind(this);
     }
 
-    public async request<T extends THttpClientRequestConfig>(config: T) {
+    public async request<Result = unknown, Params = unknown, Payload = unknown>(
+        config: THttpClientRequestConfig<Result, Params, Payload>,
+    ) {
         this.httpClientService.addInterceptors(config);
 
         return this.httpClientService
-            .request<T>({
+            .request<Result, Params, Payload>({
                 baseURL: this.baseURL,
                 timeoutMs: 15000,
                 ...config,
@@ -35,5 +37,3 @@ class HttpService implements AbstractHttpService {
 }
 
 export { HttpService };
-
-

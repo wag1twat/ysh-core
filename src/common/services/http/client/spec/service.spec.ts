@@ -20,14 +20,14 @@ describe('HttpClientService', () => {
 
         expect(httpClientService.request).toBeDefined();
 
-        await httpClientService.request({ url: baseURL + '/todos' }).then((resolved) => {
+        await httpClientService.request({ url: baseURL + '/users' }).then((resolved) => {
             expect(resolved).toBeDefined();
             expect(resolved.headers).toBeDefined();
             expect(resolved.response).toBeDefined();
             expect(resolved.statusText).toBeDefined();
         });
 
-        await httpClientService.request({ url: baseURL + '/todos/x' }).catch((error) => {
+        await httpClientService.request({ url: baseURL + '/users/x' }).catch((error) => {
             expect(error).toBeInstanceOf(HttpClientError);
         });
     });
@@ -42,20 +42,21 @@ describe('HttpClientService', () => {
 
         expect(httpClientService.request).toBeDefined();
 
-        const data = [{ data: 'event-1' }];
+        const interceptoredData = [{ data: 'event-1' }];
 
-        httpClientService.addResponseInterceptor('event-1', () => {
-            return data;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        httpClientService.addResponseInterceptor('event-1', (data) => {
+            return interceptoredData as typeof data;
         });
 
-        await httpClientService.request({ url: baseURL + '/todos' }).then((resolved) => {
+        await httpClientService.request({ url: baseURL + '/users' }).then((resolved) => {
             expect(resolved).toBeDefined();
             expect(resolved.headers).toBeDefined();
-            expect(resolved.response).toStrictEqual(data);
+            expect(resolved.response).toStrictEqual(interceptoredData);
             expect(resolved.statusText).toBeDefined();
         });
 
-        await httpClientService.request({ url: baseURL + '/todos/x' }).catch((error) => {
+        await httpClientService.request({ url: baseURL + '/users/x' }).catch((error) => {
             expect(error).toBeInstanceOf(HttpClientError);
         });
     });
@@ -74,14 +75,14 @@ describe('HttpClientService', () => {
             return { ...config, baseURL };
         });
 
-        await httpClientService.request({ url: '/todos' }).then((resolved) => {
+        await httpClientService.request({ url: '/users' }).then((resolved) => {
             expect(resolved).toBeDefined();
             expect(resolved.headers).toBeDefined();
             expect(resolved.response).toBeDefined();
             expect(resolved.statusText).toBeDefined();
         });
 
-        await httpClientService.request({ url: '/todos/x' }).catch((error) => {
+        await httpClientService.request({ url: '/users/x' }).catch((error) => {
             expect(error).toBeInstanceOf(HttpClientError);
         });
 

@@ -9,8 +9,8 @@ export type {
     THttpClientResponseHeaders,
     THttpClientResponseType,
     THttpClientServiceOptions,
-    TInferHttpClientRequestConfig,
     TReqInterceptor,
     TResInterceptor,
 } from './http';
 export { AbstractHttpService } from './http';
+export { AbstractRestService } from './rest';

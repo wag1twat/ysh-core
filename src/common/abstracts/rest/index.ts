@@ -1,0 +1,1 @@
+export { AbstractRestService } from './service';

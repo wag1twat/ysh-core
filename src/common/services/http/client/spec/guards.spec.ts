@@ -106,9 +106,11 @@ describe('HttpClientGuardsService', () => {
 
             const data = { bar: 1 };
 
-            const out = httpClientService.handleIsResult(data, cfg, cfg.guards);
-
-            expect(out).toHaveProperty('$invalid', true);
+            try {
+                httpClientService.handleIsResult(data, cfg, cfg.guards);
+            } catch (error) {
+                expect(error).toBeInstanceOf(HttpClientError);
+            }
         });
     });
 

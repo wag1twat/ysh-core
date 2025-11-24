@@ -47,15 +47,15 @@ describe('HttpService', () => {
 
         const fn = async () => {
             await httpService
-                .request({
+                .request<number>({
                     url: '/todos',
                     interceptors: {
                         response: [
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
                             ['1', (data) => 1],
-                            ['2', (data) => (data as number) + 1],
-                            ['3', (data) => (data as number) + 1],
-                            ['4', (data) => (data as number) + 1],
+                            ['2', (data) => data + 1],
+                            ['3', (data) => data + 1],
+                            ['4', (data) => data + 1],
                         ],
                     },
                 })
