@@ -64,6 +64,9 @@
         "release:dry-run": "standard-version --dry-run",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
     },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
     "config": {
         "commitizen": {
             "path": "./node_modules/cz-conventional-changelog"
